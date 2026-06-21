@@ -17,15 +17,16 @@ const (
 // Account is the aggregate root for account management.
 // Locations are referenced by foreign key (Location.AccountID) — queried via LocationRepository.
 type Account struct {
-	ID               uint      `gorm:"primaryKey"`
-	Name             string    `gorm:"not null"`
-	Plan             Plan      `gorm:"default:basic"`
-	ResellerID       *uint
-	StripeCustomerID *string
-	TrialEndsAt      *time.Time
-	Users            []User
-	CreatedAt        time.Time
-	UpdatedAt        time.Time
+	ID                   uint   `gorm:"primaryKey"`
+	Name                 string `gorm:"not null"`
+	Plan                 Plan   `gorm:"default:basic"`
+	ResellerID           *uint
+	StripeCustomerID     *string
+	StripeSubscriptionID *string
+	TrialEndsAt          *time.Time
+	Users                []User
+	CreatedAt            time.Time
+	UpdatedAt            time.Time
 }
 
 // User belongs to an Account.
@@ -39,8 +40,6 @@ type User struct {
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }
-
-
 
 // AccountRepository defines the port for account persistence.
 type AccountRepository interface {

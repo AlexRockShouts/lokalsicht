@@ -3,24 +3,26 @@ package config
 import "os"
 
 type Config struct {
-	Port              string
-	DatabaseURL        string
-	NextAuthSecret     string
-	GoogleClientID     string
-	GoogleClientSecret string
-	FrontendURL        string
-	DeepSeekAPIKey     string
-	ResendAPIKey       string
-	EncryptionKey      string
-	CronAPIKey         string
-	StripeSecretKey    string
+	Port                string
+	DatabaseURL         string
+	BackendURL          string
+	NextAuthSecret      string
+	GoogleClientID      string
+	GoogleClientSecret  string
+	FrontendURL         string
+	DeepSeekAPIKey      string
+	ResendAPIKey        string
+	EncryptionKey       string
+	CronAPIKey          string
+	StripeSecretKey     string
 	StripeWebhookSecret string
 }
 
 func Load() *Config {
 	return &Config{
-		Port:               getEnv("PORT", "5174"),
+		Port:                getEnv("PORT", "5174"),
 		DatabaseURL:         os.Getenv("DATABASE_URL"),
+		BackendURL:          getEnv("BACKEND_URL", "http://localhost:5174"),
 		NextAuthSecret:      os.Getenv("NEXTAUTH_SECRET"),
 		GoogleClientID:      os.Getenv("GOOGLE_CLIENT_ID"),
 		GoogleClientSecret:  os.Getenv("GOOGLE_CLIENT_SECRET"),
