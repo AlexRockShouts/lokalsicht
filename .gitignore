@@ -1,10 +1,13 @@
-# Dependencies
-node_modules/
-.next/
+# Docker
+.dockerignore
+docker-compose.yml
+pgdata/
 
-# Go
-backend/server
+# Dependencies
 backend/tmp/
+backend/server
+frontend/node_modules/
+frontend/.next/
 
 # Environment
 .env
@@ -28,5 +31,6 @@ build/
 coverage.out
 coverage/
 
-# Docker
-pgdata/
+# Agents
+.agents/
+skills-lock.json
