@@ -1,0 +1,26 @@
+name: Cron Jobs
+
+on:
+  schedule:
+    - cron: '*/15 * * * *'   # Every 15 min — Review check
+    - cron: '0 2 * * *'      # Daily 02:00 UTC — Insight sync
+  workflow_dispatch:
+
+jobs:
+  review-check:
+    if: github.event.schedule == '*/15 * * * *' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check new reviews
+        run: |
+          curl -f -X POST ${{ secrets.BACKEND_URL }}/api/internal/cron/check-reviews \
+            -H "Authorization: Bearer ${{ secrets.CRON_API_KEY }}"
+
+  insight-sync:
+    if: github.event.schedule == '0 2 * * *' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Sync insights
+        run: |
+          curl -f -X POST ${{ secrets.BACKEND_URL }}/api/internal/cron/sync-insights \
+            -H "Authorization: Bearer ${{ secrets.CRON_API_KEY }}"

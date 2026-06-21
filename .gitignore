@@ -1,0 +1,32 @@
+# Dependencies
+node_modules/
+.next/
+
+# Go
+backend/server
+backend/tmp/
+
+# Environment
+.env
+.env.local
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Build
+dist/
+build/
+
+# Testing
+coverage.out
+coverage/
+
+# Docker
+pgdata/
