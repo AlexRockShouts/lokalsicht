@@ -8,6 +8,7 @@ import (
 	"github.com/go-chi/chi/v5"
 	chimiddleware "github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/cors"
+	"github.com/joho/godotenv"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
@@ -28,6 +29,10 @@ import (
 )
 
 func main() {
+	// Load .env from project root (or current dir for production)
+	godotenv.Load("../.env")
+	godotenv.Load(".env")
+
 	cfg := config.Load()
 
 	// Database
@@ -61,7 +66,7 @@ func main() {
 	billingHandler := httphandler.NewBillingHandler(db, stripeClient)
 
 	// GBP Client
-	redirectURI := cfg.BackendURL + "/api/auth/gbp/callback"
+	redirectURI := cfg.BackendURL + "/api/gbp/callback"
 	gbpClient := gbp.NewClient(cfg.GoogleClientID, cfg.GoogleClientSecret, redirectURI, cfg.FrontendURL, cfg.EncryptionKey)
 	gbpHandler := httphandler.NewGBPHandler(gbpClient, db, cfg.FrontendURL)
 
@@ -89,7 +94,7 @@ func main() {
 	})
 
 	// GBP OAuth callback (no auth required — Google redirects here)
-	r.Get("/api/auth/gbp/callback", gbpHandler.Callback)
+	r.Get("/api/gbp/callback", gbpHandler.Callback)
 
 	// Public
 	r.Post("/api/auth/login", func(w http.ResponseWriter, r *http.Request) {
@@ -105,7 +110,7 @@ func main() {
 		r.Get("/api/me", httphandler.MeHandler)
 
 		// GBP connect
-		r.Post("/api/auth/gbp/connect", gbpHandler.Connect)
+		r.Post("/api/gbp/connect", gbpHandler.Connect)
 
 		// Locations
 		locHandler := httphandler.NewLocationHandler(db)
